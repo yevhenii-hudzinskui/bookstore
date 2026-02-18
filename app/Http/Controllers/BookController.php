@@ -2,32 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
-    public array $books = [
-        1 => ['name' => 'book 1', 'author' => 'author 1'],
-        2 => ['name' => 'book 2', 'author' => 'author 2'],
-        3 => ['name' => 'book 3', 'author' => 'author 3'],
-        4 => ['name' => 'book 4', 'author' => 'author 4'],
-    ];
-
     public function index()
     {
-//        DB::table('books')->insert(['name' => 'book 1', 'author' => 'author 1']);
-        $res = DB::table('books')->get();
-        dd($res);
+        $books = Book::all();
+
         return view('index')
-            ->with('books', $this->books);
+            ->with('books', $books);
     }
 
-    public function show(int $id)
+    public function show(Book $book)
     {
         return view('show')
-           ->with('id', $id)
-            ->with('book', $this->books[$id]);
+            ->with('book', $book);
     }
 
     public function create()
@@ -37,28 +29,40 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        // Збереження в базу даних
-        //
+        $book = [
+            'name' => $request->input('name'),
+            'author' => $request->input('author')
+        ];
+
+        Book::create($book);
+
         return to_route('books.index');
     }
 
-    public function edit(Request $request, int $id)
+    public function edit(Request $request, Book $book)
     {
+
         return view('edit')
-            ->with('id', $id)
-            ->with('book', $this->books[$id]);
+            ->with('book', $book);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Book $book)
     {
-        // Оновлення в базі даних
-        //
+        $data = [
+            'name' => $request->input('name'),
+            'author' => $request->input('author')
+        ];
+
+        $book->fill($data);
+        $book->save();
+
         return to_route('books.index');
     }
 
-    public function destroy(int $id){
-        // видалення в базі даних
-        //
-        return to_route('books.show', ['id' => $id]);
+    public function destroy(Book $book){
+
+        $book->delete();
+
+        return to_route('books.index');
     }
 }

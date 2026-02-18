@@ -25,8 +25,8 @@
     <a href="{{ route('books.create') }}">Add new book</a>
 
     <ul>
-        @foreach($books as $key => $item)
-            <li><a href="{{ route('books.show', ['id' => $key]) }}">{{ $item['name'] }}</a></li>
+        @foreach($books as $book)
+            <li><a href="{{ route('books.show', $book) }}">{{ $book->id }} : {{ $book->name }}</a></li>
         @endforeach
     </ul>
     </body>

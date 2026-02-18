@@ -22,17 +22,17 @@
     <body>
     <a href="{{ route('books.index') }}">Go to index</a>
 
-    <form method="POST" action="{{ route('books.update', ['id' => $id]) }}">
+    <form method="POST" action="{{ route('books.update', $book) }}">
         @method('PUT')
         @csrf
         <p>
             <lable for="name">Name</lable>
-            <input type="text" id="name" name="name" value="{{ $book['name'] }}">
+            <input type="text" id="name" name="name" value="{{ $book->name }}">
         </p>
 
         <p>
             <lable for="author">Author</lable>
-            <input type="text" id="author" name="author" value="{{ $book['author'] }}">
+            <input type="text" id="author" name="author" value="{{ $book->author }}">
         </p>
         <p>
             <button type="submit">Update</button>

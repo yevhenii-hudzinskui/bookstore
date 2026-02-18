@@ -22,13 +22,19 @@
     <body>
     <a href="{{ route('books.index') }}">Go to index</a>
 
-    <p>Book id: {{ $id }}</p>
+    @if($book)
+        <p>Book id: {{ $book->id }}</p>
+        <p>Name: {{ $book->name }}</p>
+        <p>Author: {{ $book->author }}</p>
 
-    <a href="{{ route('books.edit', ['id' => $id]) }}">Edit</a>
-    <form method="POST" action="{{ route('books.destroy', ['id' => $id]) }}">
-        @method('DELETE')
-        @csrf
-        <button type="submit">Delete</button>
-    </form>
+        <a href="{{ route('books.edit', $book) }}">Edit</a>
+        <form method="POST" action="{{ route('books.destroy', $book) }}">
+            @method('DELETE')
+            @csrf
+            <button type="submit">Delete</button>
+        </form>
+    @else
+        <h1>Not found</h1>
+    @endif
     </body>
 </html>
