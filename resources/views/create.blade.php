@@ -31,7 +31,11 @@
 
         <p>
             <lable for="author">Author</lable>
-            <input type="text" id="author" name="author">
+            <select name="author_id">
+                @foreach($authors as $author)
+                    <option value="{{ $author->getKey() }}">{{ $author->name }}</option>
+                @endforeach
+            </select>
         </p>
         <p>
             <button type="submit">Create</button>

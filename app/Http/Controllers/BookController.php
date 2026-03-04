@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -24,17 +24,19 @@ class BookController extends Controller
 
     public function create()
     {
-        return view('create');
+        $authors = Author::all();
+
+        return view('create')
+            ->with('authors', $authors);
     }
 
     public function store(Request $request)
     {
-        $book = [
-            'name' => $request->input('name'),
-            'author' => $request->input('author')
-        ];
+        $author = Author::find($request->input('author_id'));
 
-        Book::create($book);
+        $author->books()->create([
+            'name' => $request->input('name'),
+        ]);
 
         return to_route('books.index');
     }

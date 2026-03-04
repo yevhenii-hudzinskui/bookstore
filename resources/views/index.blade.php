@@ -26,7 +26,7 @@
 
     <ul>
         @foreach($books as $book)
-            <li><a href="{{ route('books.show', $book) }}">{{ $book->id }} : {{ $book->name }}</a></li>
+            <li><a href="{{ route('books.show', $book) }}">{{ $book->id }} : {{ $book->name }}</a> ({{ $book->author?->name }})</li>
         @endforeach
     </ul>
     </body>
