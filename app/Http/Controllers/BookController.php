@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Http\Request;
@@ -30,32 +32,32 @@ class BookController extends Controller
             ->with('authors', $authors);
     }
 
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
-        $author = Author::find($request->input('author_id'));
+        $author = Author::findOrFail($request->safe()->input('author_id'));
 
-        $author->books()->create([
-            'name' => $request->input('name'),
-        ]);
+        $author->books()->create(
+            $request->validated()
+        );
 
         return to_route('books.index');
     }
 
     public function edit(Request $request, Book $book)
     {
+        $authors = Author::all();
 
         return view('edit')
-            ->with('book', $book);
+            ->with('book', $book)
+            ->with('authors', $authors);
     }
 
-    public function update(Request $request, Book $book)
+    public function update(UpdateBookRequest $request, Book $book)
     {
-        $data = [
-            'name' => $request->input('name'),
-            'author' => $request->input('author')
-        ];
+        $author = Author::findOrFail($request->safe()->input('author_id'));
 
-        $book->fill($data);
+        $book->fill($request->validated());
+        $book->author()->associate($author);
         $book->save();
 
         return to_route('books.index');
