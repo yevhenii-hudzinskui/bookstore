@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBookRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateBookRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     /**

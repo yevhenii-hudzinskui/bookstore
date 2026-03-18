@@ -6,11 +6,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
-Route::resource('books', BookController::class);
+Route::middleware('auth')
+    ->group( function () {
+        Route::view('dashboard', 'dashboard')
+            ->name('dashboard');
 
-Route::get('authors', [AuthorController::class, 'index'])->name('authors.index');
+        Route::resource('books', BookController::class);
 
-Route::view('authors/create', 'authors.create');
-Route::post('authors', [AuthorController::class, 'store'])
-    ->name('authors.store');
+        Route::get('authors', [AuthorController::class, 'index'])->name('authors.index');
+
+        Route::view('authors/create', 'authors.create');
+        Route::post('authors', [AuthorController::class, 'store'])
+            ->name('authors.store');
+    });
+
 
