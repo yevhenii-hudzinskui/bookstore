@@ -11,17 +11,15 @@ class AuthorController extends Controller
     {
         $authors = Author::all();
 
-        return view('authors.index')
-            ->with('authors', $authors);
+        return view("authors.index")->with("authors", $authors);
     }
 
-    public function store(Request $request)
+    public function store(StoreAuthorRequest $request)
     {
-        Author::create([
-            'name' => $request->input('name'),
-            'country' => $request->input('country'),
-        ]);
+        Author::create($request->validated());
 
-        return redirect()->route('authors.index');
+        return redirect()->route("authors.index");
+
+        return redirect()->route("authors.index");
     }
 }
