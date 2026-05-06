@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
             if ($user->isAdministrator()) {
                 return true;
             }
+            return null;
         });
 
         Gate::define('update-book', function (User $user, Book $book) {
@@ -38,6 +39,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('can-view-books', function (User $user) {
+            return $user->email === 'test@example.com';
+        });
+
+        Gate::define('can-view-dashboard', function (User $user) {
             return $user->email === 'test@example.com';
         });
     }

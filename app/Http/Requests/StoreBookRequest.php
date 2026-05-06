@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Auth;
+use App\Models\Book;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBookRequest extends FormRequest
@@ -12,7 +12,7 @@ class StoreBookRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return $this->user()->can('create', Book::class);
     }
 
     /**
@@ -23,7 +23,7 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:App\Models\Book,name',
+            'name' => 'required|string|min:4|max:255|unique:App\Models\Book,name',
             'author_id' => 'required|exists:App\Models\Author,id',
         ];
     }

@@ -8,6 +8,15 @@ use Illuminate\Auth\Access\Response;
 
 class BookPolicy
 {
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->isAdministrator()) {
+            return Response::allow();
+        }
+
+        return null;
+    }
+
     /**
      * Determine whether the user can view any models.
      */
@@ -19,9 +28,11 @@ class BookPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Book $book): bool
+    public function view(User $user, Book $book): Response
     {
-        return false;
+        return $book->user_id === $user->id
+            ? Response::allow()
+            : Response::denyAsNotFound('Book not found');
     }
 
     /**

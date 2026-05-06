@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Author;
+use App\Models\Book;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,11 +17,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $user = User::factory()->create();
+        $author = Author::factory()->create();
+        Book::factory()
+            ->for($user)
+            ->for($author)
+            ->count(8)
+            ->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+
+
+//        $this->call([
+//            AuthorSeeder::class,
+//        ]);
+//
+//        User::factory(100)->create();
+//
+//        User::factory()->create([
+//            'name' => 'Test User',
+//            'email' => 'test@example.com',
+//        ]);
     }
 }
