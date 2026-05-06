@@ -9,13 +9,15 @@ use App\Models\Book;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('can-view-books');
+
         $books = Book::all();
 
         return view('index')
