@@ -2,8 +2,13 @@
 
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ChangeLocale;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Support\Facades\Route;
+
+
+Route::post('change-locale', ChangeLocale::class)
+    ->name('change-locale');
 
 Route::prefix('{locale}')->
     group(

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Book;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Support\Facades\URL;
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+//        JsonResource::withoutWrapping();
+
         URL::defaults(['locale' => app()->getLocale()]);
 
         Gate::before(function (User $user, string $ability) {
