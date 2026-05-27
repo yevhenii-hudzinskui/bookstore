@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('change-locale', ChangeLocale::class)
     ->name('change-locale');
 
-Route::prefix('{locale}')->
+//Route::permanentRedirect('/', '/' . app()->getLocale());
+
+Route::prefix('{locale?}')->
     group(
     function () {
 

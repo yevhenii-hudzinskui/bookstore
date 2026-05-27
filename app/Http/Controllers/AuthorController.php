@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAuthorRequest;
 use App\Models\Author;
 use Illuminate\Http\Request;
 
@@ -17,8 +18,6 @@ class AuthorController extends Controller
     public function store(StoreAuthorRequest $request)
     {
         Author::create($request->validated());
-
-        return redirect()->route("authors.index");
 
         return redirect()->route("authors.index");
     }
