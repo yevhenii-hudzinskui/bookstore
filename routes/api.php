@@ -10,9 +10,14 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/users', function (Request $request) {
-//    return UserResource::collection(User::take(3)->get()->keyBy->id);
-//    return User::take(3)->get()->toResourceCollection();
+    sleep(25);
     return User::paginate()->toResourceCollection();
+});
+
+Route::post('/users', function (Request $request) {
+    User::create($request->all());
+//    return response()->json(['message' => 'User created successfully']);
+    return response(null, 201);
 });
 
 Route::get('/user/{id}', function (string $id) {

@@ -8,6 +8,7 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +29,9 @@ class AppServiceProvider extends ServiceProvider
     {
 //        JsonResource::withoutWrapping();
 
+        Http::macro('local', function () {
+            return Http::baseUrl(config('app.url'));
+        });
         URL::defaults(['locale' => app()->getLocale()]);
 
         Gate::before(function (User $user, string $ability) {

@@ -6,6 +6,39 @@ use App\Http\Controllers\ChangeLocale;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Support\Facades\Route;
 
+Route::get('users', function () {
+    $response = Http::withUrlParameters([
+        'endpoint' => 'https://laravel.com',
+        'page' => 'docs',
+        'version' => '13.x',
+        'topic' => 'validation',
+    ])->get('{+endpoint}/{page}/{version}/{topic}');
+
+    dd($response->body());
+    $response = \Illuminate\Support\Facades\Http::local()->withQueryParameters([
+        'page' => 1,
+    ])->timeout(35)->get('/api/users');
+
+    $data = $response->json('data');
+    return view('users')->with('users', $data);
+});
+
+Route::get('users/store', function () {
+
+    $response = \Illuminate\Support\Facades\Http::local()->post('/api/users', [
+        'name' => 'test',
+        'email' => 'test23434@exc.com',
+        'password' => 'secret'
+    ]);
+
+    $response->onError(function ($response) {
+        dd($response->status(), $response->body());
+    });
+    dd($response->status());
+//    $response->throw();
+});
+
+
 
 Route::post('change-locale', ChangeLocale::class)
     ->name('change-locale');
@@ -19,7 +52,15 @@ Route::prefix('{locale?}')->
     Route::view('/', 'welcome');
 
     Route::get('/home', function () {
-        dd('Home page');
+
+        $response = Http::dd()->withUrlParameters([
+            'endpoint' => 'https://laravel.com',
+            'page' => 'docs',
+            'version' => '13.x',
+            'topic' => 'validation',
+        ])->get('{+endpoint}/{page}/{version}/{topic}');
+
+        dd($response->status(), $response->body());
     });
 
     Route::get('/profile', function () {
