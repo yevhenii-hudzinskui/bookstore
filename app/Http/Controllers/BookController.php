@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateBookAction;
+use App\Events\BookPublished;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Jobs\BookViewed;
 use App\Models\Author;
 use App\Models\Book;
 use Auth;
@@ -41,17 +44,17 @@ class BookController extends Controller
             ->with('authors', $authors);
     }
 
-    public function store(StoreBookRequest $request)
+    public function store(StoreBookRequest $request, CreateBookAction $createBookAction)
     {
         Gate::authorize('create', Book::class);
 
-        $author = Author::findOrFail($request->safe()->input('author_id'));
-        $user = $request->user();
+        $book = $createBookAction->execute(
+            $request->validated(),
+            $request->safe()->input('author_id'),
+            $request->user()
+        );
 
-        $book = Book::make($request->validated());
-        $book->author()->associate($author);
-        $book->user()->associate($user);
-        $book->save();
+//        BookPublished::dispatch($book, $request->user());
 
         return to_route('books.index');
     }

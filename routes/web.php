@@ -66,7 +66,7 @@ Route::prefix('{locale?}')->
     Route::get('/profile', function () {
         echo 'Profile page';
     })->middleware(EnsureTokenIsValid::class);
-
+    });
     Route::middleware('auth')
         ->group( function () {
             Route::view('dashboard', 'dashboard')
@@ -83,4 +83,4 @@ Route::prefix('{locale?}')->
                 ->name('authors.store');
         });
 
-    });
+

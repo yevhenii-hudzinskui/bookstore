@@ -11,8 +11,7 @@ class StoreBookRequest extends FormRequest
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
-    {
-        return $this->user()->can('create', Book::class);
+    {     return $this->user()->can('create', Book::class);
     }
 
     /**
