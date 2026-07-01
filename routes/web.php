@@ -4,7 +4,38 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ChangeLocale;
 use App\Http\Middleware\EnsureTokenIsValid;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+
+Route::view('store', 'store');
+Route::post('stor', function(Request $request){
+
+    $file = $request->file('test');
+
+//    $name = $file->getClientOriginalName();
+//    $extension = $file->getClientOriginalExtension();
+
+    $name = $file->hashName(); // Generate a unique, random name...
+    $extension = $file->extension();
+    dd($name, $extension);
+
+    $path = $request->file('test')->store('test', 'public');
+
+    dd($path);
+    return $path;
+
+    dd($request->all());
+    $content = json_encode(['name' => 'Ivan', 'age' => 23]);
+
+    Storage::disk('public')->put('store.json', $content);
+    $data = Storage::disk('public')->json('store.json');
+//    $size = Storage::disk('public')->path('store.json');
+//    $data = Storage::temporaryUrl('store.json', now()->plus(seconds: 15));
+
+//    return Storage::disk('public')->download('store.json');
+    dd($data);
+})->name('stor');
 
 Route::get('users', function () {
     $response = Http::withUrlParameters([
